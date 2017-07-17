@@ -1,6 +1,7 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, send_file
 from inflection import singularize
 from app import redis
+import os
 import pickle
 
 blueprint = Blueprint('metadata_api', __name__, url_prefix='/metadata')
@@ -13,5 +14,10 @@ def api(data, id=None):
 
     if id:
         data = data + '/' + id
+
+    large_attrs = ['sc_school']
+
+    if data in large_attrs:
+        return send_file(open(os.getcwd() + '/app/apis/large_attrs/' + data + '.json'))
 
     return jsonify(pickle.loads(redis.get(data)))
