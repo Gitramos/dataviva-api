@@ -18,6 +18,8 @@ def api(data, id=None):
     large_attrs = ['sc_school']
 
     if data in large_attrs:
-        return send_file(open(os.getcwd() + '/app/apis/large_attrs/' + data + '.json'))
+        return send_file(open(os.getcwd() + '/app/apis/large_attrs/' + data + '.json'),
+                        attachment_filename=(data + '.json'),
+                        mimetype='application/json')
 
     return jsonify(pickle.loads(redis.get(data)))
